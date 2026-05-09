@@ -1,0 +1,4 @@
+(executable
+ (public_name mini_ml)
+ (name main)
+ (libraries mini_ml_lib))
