@@ -6,7 +6,7 @@ open Visualize
 
 let run exp =
   try
-    let ty = identify exp [] 0 in
+    let ty = indentify exp [] 0 in
     let value = eval exp [] in
 
     let st_exp = string_of_exp exp in

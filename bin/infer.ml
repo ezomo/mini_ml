@@ -124,7 +124,7 @@ let rec inf env exp n =
       let env2 = (name, sigma) :: env1 in
       inf env2 e2 n1
 
-let identify exp env n =
+let indentify exp env n =
   let ty, eqs, _ = inf env exp n in
   let theta = unify eqs [] in
   List.fold_left subst_ty ty theta
