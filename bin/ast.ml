@@ -11,6 +11,7 @@ type exp =
   | Int of int
   | Bool of bool
   | IF of exp * exp * exp
+  | Eq of exp * exp
 
 type value =
   | VInt of int

@@ -146,6 +146,10 @@ let rec inf env exp n =
       let sigma = generalize env1 ty in
       let env2 = (fn_name, sigma) :: env1 in
       inf env2 in_exp n3
+  | Eq (e1, e2) ->
+      let t1, c1, n1 = inf env e1 n in
+      let t2, c2, n2 = inf env e2 n1 in
+      (TBool, (t1, t2) :: (c1 @ c2), n2)
 
 let indentify exp env n =
   let ty, eqs, _ = inf env exp n in

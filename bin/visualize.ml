@@ -17,6 +17,7 @@ let rec string_of_exp exp =
   | LetRec (fn_name, arg_name, fn_body, in_exp) ->
       "(let rec " ^ fn_name ^ " " ^ arg_name ^ " = " ^ string_of_exp fn_body
       ^ " in " ^ string_of_exp in_exp ^ ")"
+  | Eq (e1, e2) -> "(" ^ string_of_exp e1 ^ " = " ^ string_of_exp e2 ^ ")"
 
 let string_of_value v =
   match v with

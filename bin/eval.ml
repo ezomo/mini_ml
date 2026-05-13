@@ -33,3 +33,10 @@ let rec eval exp env =
   | LetRec (fn_name, arg_name, fn_body, in_exp) ->
       let v = VRecClosure (fn_name, arg_name, fn_body, env) in
       eval in_exp ((fn_name, v) :: env)
+  | Eq (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 = n2)
+      | VBool b1, VBool b2 -> VBool (b1 = b2)
+      | _ -> failwith "type error")
