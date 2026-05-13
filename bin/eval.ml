@@ -17,8 +17,10 @@ let rec eval exp env =
       let v2 = eval e2 env in
       match v1 with
       | VClosure (name, fn, env') -> eval fn ((name, v2) :: env')
-      | VRecClosure (fn_name, arg_name, fn_body, env') ->
-          eval fn_body ((arg_name, v2) :: (fn_name, v1) :: env') (*環境に自身を追加*)
+      | VRecClosure (fn_name, vfunc) ->
+          let arg_name, fn_body, env' = vfunc in
+          eval fn_body ((arg_name, v2) :: (fn_name, v1) :: env')
+          (*環境に自身を追加*)
       | _ -> failwith "not a function")
   | Fun (name, exp) -> VClosure (name, exp, env)
   | Let (name, e1, e2) ->
@@ -30,8 +32,9 @@ let rec eval exp env =
       | VBool true -> eval e2 env
       | VBool false -> eval e3 env
       | _ -> failwith "type error")
-  | LetRec (fn_name, arg_name, fn_body, in_exp) ->
-      let v = VRecClosure (fn_name, arg_name, fn_body, env) in
+  | LetRec (fn_name, fn, in_exp) ->
+      let arg_name, fn_body = fn in
+      let v = VRecClosure (fn_name, (arg_name, fn_body, env)) in
       eval in_exp ((fn_name, v) :: env)
   | Eq (e1, e2) -> (
       let v1 = eval e1 env in

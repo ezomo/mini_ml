@@ -12,6 +12,7 @@ let ident  = letter (letter | digit)*
 rule token = parse
   | white       { token lexbuf }
   | "let"       { LET }
+  | "rec"       { REC }
   | "in"        { IN }
   | "fun"       { FUN }
   | "if"        { IF }

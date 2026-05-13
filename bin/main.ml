@@ -23,19 +23,8 @@ let poly_test = parse "let id = fun x -> x in let a = id 3 in id (fun y -> y)"
 let () = run poly_test
 let if_test = parse "3 + (if true then 5 else 10)"
 let () = run if_test
-let eq_test = Eq (Int 3, Int 3)
+let eq_test = parse "3 = 3"
 let () = run eq_test
-
-let rec_test =
-  App
-    ( LetRec
-        ( "add",
-          "n",
-          IF
-            ( Eq (Var "n", Int 0),
-              Int 0,
-              Plus (Var "n", App (Var "add", Plus (Var "n", Int (-1)))) ),
-          Var "add" ),
-      Int 5 )
-
+let rec_test = parse "let rec add = fun x -> if x = 0 then 0 else x in add "
 let () = run rec_test
+let rec f = 2

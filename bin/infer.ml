@@ -132,7 +132,7 @@ let rec inf env exp n =
       let t2, c2, n2 = inf env e2 n1 in
       let t3, c3, n3 = inf env e3 n2 in
       (t2, (t1, TBool) :: (t2, t3) :: (c1 @ c2 @ c3), n3)
-  | LetRec (fn_name, arg_name, fn_body, in_exp) ->
+  | LetRec (fn_name, (arg_name, fn_body), in_exp) ->
       let t_arg, n1 = typver_new n in
       let t_ret, n2 = typver_new n1 in
       let t_rec_fn = TArrow (t_arg, t_ret) in
