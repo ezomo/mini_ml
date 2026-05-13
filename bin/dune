@@ -1,4 +1,10 @@
 (executable
  (public_name mini_ml)
  (name main)
- (libraries mini_ml_lib))
+ (modules main ast eval infer types lib visualize lexer parser))
+
+(ocamllex
+ (modules lexer))
+
+(menhir
+ (modules parser))
