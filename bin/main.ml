@@ -25,3 +25,5 @@ let poly_test =
       Let ("a", App (Var "id", Int 3), App (Var "id", Fun ("y", Var "y"))) )
 
 let () = run poly_test
+let if_test = Plus (Int 3, IF (Bool true, Int 5, Int 10))
+let () = run if_test

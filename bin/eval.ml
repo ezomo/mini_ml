@@ -10,6 +10,7 @@ let rec eval exp env =
       | VInt n1, VInt n2 -> VInt (n1 + n2)
       | _ -> failwith "type error")
   | Int this -> VInt this
+  | Bool this -> VBool this
   | Var name -> lookup name env
   | App (e1, e2) -> (
       let v1 = eval e1 env in
@@ -21,3 +22,9 @@ let rec eval exp env =
   | Let (name, e1, e2) ->
       let v1 = eval e1 env in
       eval e2 ((name, v1) :: env)
+  | IF (e1, e2, e3) -> (
+      let v1 = eval e1 env in
+      match v1 with
+      | VBool true -> eval e2 env
+      | VBool false -> eval e3 env
+      | _ -> failwith "type error")

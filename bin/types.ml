@@ -2,7 +2,7 @@
 type tyvar = string
 
 (* 単相型 *)
-type ty = TInt | TArrow of ty * ty | TVar of tyvar
+type ty = TInt | TArrow of ty * ty | TBool | TVar of tyvar
 
 (* 多相型　しょうみ [多相許可変数] * 変数を含む型 *)
 type scheme = Forall of tyvar list * ty

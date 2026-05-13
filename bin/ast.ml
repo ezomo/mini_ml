@@ -8,6 +8,8 @@ type exp =
   | Var of var
   | Plus of exp * exp
   | Int of int
+  | Bool of bool
+  | IF of exp * exp * exp
 
-type value = VInt of int | VClosure of var * exp * env
+type value = VInt of int | VBool of bool | VClosure of var * exp * env
 and env = (var * value) list

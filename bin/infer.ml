@@ -5,12 +5,14 @@ open Lib
 let rec occurs tyvar ty =
   match ty with
   | TInt -> false
+  | TBool -> false
   | TArrow (i, o) -> occurs tyvar i || occurs tyvar o
   | TVar ty -> tyvar = ty
 
 let rec subst_ty ob_ty (tyvar, ac_ty) =
   match ob_ty with
   | TInt -> TInt
+  | TBool -> TBool
   | TArrow (t2, t3) ->
       TArrow (subst_ty t2 (tyvar, ac_ty), subst_ty t3 (tyvar, ac_ty))
   | TVar name -> if name = tyvar then ac_ty else TVar name
@@ -37,6 +39,7 @@ let ftv_ty ty =
     | TVar tyvar -> tyvar :: list
     | TArrow (t1, t2) -> main t1 (main t2 list)
     | TInt -> list
+    | TBool -> list
   in
   main ty []
 
@@ -94,6 +97,7 @@ let generalize env t =
 let rec inf env exp n =
   match exp with
   | Int _ -> (TInt, [], n)
+  | Bool _ -> (TBool, [], n)
   | Plus (e1, e2) ->
       let ty1, con1, n1 = inf env e1 n in
       let ty2, con2, n2 = inf env e2 n1 in
@@ -123,6 +127,11 @@ let rec inf env exp n =
       let sigma = generalize env1 ty in
       let env2 = (name, sigma) :: env1 in
       inf env2 e2 n1
+  | IF (e1, e2, e3) ->
+      let t1, c1, n1 = inf env e1 n in
+      let t2, c2, n2 = inf env e2 n1 in
+      let t3, c3, n3 = inf env e3 n2 in
+      (t2, (t1, TBool) :: (t2, t3) :: (c1 @ c2 @ c3), n3)
 
 let indentify exp env n =
   let ty, eqs, _ = inf env exp n in
