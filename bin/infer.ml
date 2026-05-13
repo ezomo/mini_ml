@@ -132,6 +132,20 @@ let rec inf env exp n =
       let t2, c2, n2 = inf env e2 n1 in
       let t3, c3, n3 = inf env e3 n2 in
       (t2, (t1, TBool) :: (t2, t3) :: (c1 @ c2 @ c3), n3)
+  | LetRec (fn_name, arg_name, fn_body, in_exp) ->
+      let t_arg, n1 = typver_new n in
+      let t_ret, n2 = typver_new n1 in
+      let t_rec_fn = TArrow (t_arg, t_ret) in
+      let fn_scheme = Forall ([], t_rec_fn) in
+      let arg_scheme = Forall ([], t_arg) in
+      let body_env = (fn_name, fn_scheme) :: (arg_name, arg_scheme) :: env in
+      let t1, c1, n3 = inf body_env fn_body n2 in
+      let theta = unify ((t_ret, t1) :: c1) [] in
+      let ty = List.fold_left subst_ty t_rec_fn theta in
+      let env1 = subst_scheme_env env theta in
+      let sigma = generalize env1 ty in
+      let env2 = (fn_name, sigma) :: env1 in
+      inf env2 in_exp n3
 
 let indentify exp env n =
   let ty, eqs, _ = inf env exp n in

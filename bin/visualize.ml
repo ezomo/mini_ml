@@ -14,12 +14,17 @@ let rec string_of_exp exp =
   | IF (e1, e2, e3) ->
       "(if " ^ string_of_exp e1 ^ " then " ^ string_of_exp e2 ^ " else "
       ^ string_of_exp e3 ^ ")"
+  | LetRec (fn_name, arg_name, fn_body, in_exp) ->
+      "(let rec " ^ fn_name ^ " " ^ arg_name ^ " = " ^ string_of_exp fn_body
+      ^ " in " ^ string_of_exp in_exp ^ ")"
 
 let string_of_value v =
   match v with
   | VInt x -> string_of_int x
   | VBool x -> string_of_bool x
   | VClosure (name, exp, env) -> "λ" ^ name ^ "." ^ string_of_exp exp
+  | VRecClosure (fn_name, arg_name, fn_body, env) ->
+      "rec " ^ fn_name ^ " " ^ arg_name ^ "." ^ string_of_exp fn_body
 (* env は危険そう *)
 
 let rec string_of_ty ty =
