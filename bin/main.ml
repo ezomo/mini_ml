@@ -87,6 +87,9 @@ let test_z =
       "int" );
   ]
 
+(* let rec y f = f (fun x -> (y f) x) *)
+let y = "let rec y  = fun f -> f (y f) in "
+
 let () =
   print_endline "=== Normal Tests ===";
   List.iter run_test test_normal;
@@ -98,4 +101,13 @@ let () =
   List.iter run_test test_poly;
 
   print_endline "=== Z Combinator Tests ===";
-  List.iter run_test test_z
+  List.iter run_test test_z;
+
+  print_endline "=== Y Combinator Tests ===";
+  run_test (y ^ "y", "λf.(y f)", "(a -> b) -> a")
+
+(* let () =
+  run_test
+    ( y ^ "y (fun g -> fun n -> if n = 0 then 1 else n * g (n - 1)) 5",
+      "120",
+      "int" ) *)
