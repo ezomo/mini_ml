@@ -21,8 +21,18 @@ rule token = parse
   | "true"      { TRUE }
   | "false"     { FALSE }
   | "="         { EQ }
+  | "!="        { NEQ }
   | "->"        { ARROW }
   | "+"         { PLUS }
+  | "-"         { MINUS }
+  | "*"         { TIMES }
+  | "<"         { LT }
+  | ">"         { GT }
+  | "<="        { LE }
+  | ">="        { GE }
+  | "&&"        { AND }
+  | "||"        { OR }
+  | "!"         { NOT }
   | "("         { LPAREN }
   | ")"         { RPAREN }
   | int  as n   { INT (int_of_string n) }

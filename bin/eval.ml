@@ -9,6 +9,34 @@ let rec eval exp env =
       match (v1, v2) with
       | VInt n1, VInt n2 -> VInt (n1 + n2)
       | _ -> failwith "type error")
+  | Sub (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VInt (n1 - n2)
+      | _ -> failwith "type error")
+  | Mul (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VInt (n1 * n2)
+      | _ -> failwith "type error")
+  | And (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VBool b1, VBool b2 -> VBool (b1 && b2)
+      | _ -> failwith "type error")
+  | Or (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VBool b1, VBool b2 -> VBool (b1 || b2)
+      | _ -> failwith "type error")
+  | Not e -> (
+      match eval e env with
+      | VBool b -> VBool (not b)
+      | _ -> failwith "type error")
   | Int this -> VInt this
   | Bool this -> VBool this
   | Var name -> lookup name env
@@ -42,4 +70,35 @@ let rec eval exp env =
       match (v1, v2) with
       | VInt n1, VInt n2 -> VBool (n1 = n2)
       | VBool b1, VBool b2 -> VBool (b1 = b2)
+      | _ -> failwith "type error")
+  | Neq (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 <> n2)
+      | VBool b1, VBool b2 -> VBool (b1 <> b2)
+      | _ -> failwith "type error")
+  | Lt (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 < n2)
+      | _ -> failwith "type error")
+  | Gt (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 > n2)
+      | _ -> failwith "type error")
+  | Le (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 <= n2)
+      | _ -> failwith "type error")
+  | Ge (e1, e2) -> (
+      let v1 = eval e1 env in
+      let v2 = eval e2 env in
+      match (v1, v2) with
+      | VInt n1, VInt n2 -> VBool (n1 >= n2)
       | _ -> failwith "type error")

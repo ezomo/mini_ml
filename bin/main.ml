@@ -27,4 +27,20 @@ let eq_test = parse "3 = 3"
 let () = run eq_test
 let rec_test = parse "let rec add = fun x -> if x = 0 then 0 else x in add "
 let () = run rec_test
-let rec f = 2
+let and_test = parse "true && false || true"
+let () = run and_test
+
+let factorial_test =
+  parse
+    "let rec fact = fun n -> if n = 0 then 1 else n * fact (n - 1) in fact 5"
+
+let () = run factorial_test
+let y = "let rec y  = fun f -> (fun x -> f (y f) x) in "
+let y_test = run (parse (y ^ "y"))
+
+let () =
+  run
+    (parse
+       "let rec y = fun f -> (fun x -> f (y f) x) in \n\
+        let fact = fun g -> fun n -> if n = 0 then 1 else n * g (n - 1) in\n\
+        (y fact) 5")

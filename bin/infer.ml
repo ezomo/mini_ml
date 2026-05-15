@@ -103,6 +103,25 @@ let rec inf env exp n =
       let ty2, con2, n2 = inf env e2 n1 in
       (* t1 = t2 , t1 = int *)
       (TInt, (ty1, TInt) :: (ty2, TInt) :: (con1 @ con2), n2)
+  | Sub (e1, e2) ->
+      let ty1, con1, n1 = inf env e1 n in
+      let ty2, con2, n2 = inf env e2 n1 in
+      (TInt, (ty1, TInt) :: (ty2, TInt) :: (con1 @ con2), n2)
+  | Mul (e1, e2) ->
+      let ty1, con1, n1 = inf env e1 n in
+      let ty2, con2, n2 = inf env e2 n1 in
+      (TInt, (ty1, TInt) :: (ty2, TInt) :: (con1 @ con2), n2)
+  | And (e1, e2) ->
+      let ty1, con1, n1 = inf env e1 n in
+      let ty2, con2, n2 = inf env e2 n1 in
+      (TBool, (ty1, TBool) :: (ty2, TBool) :: (con1 @ con2), n2)
+  | Or (e1, e2) ->
+      let ty1, con1, n1 = inf env e1 n in
+      let ty2, con2, n2 = inf env e2 n1 in
+      (TBool, (ty1, TBool) :: (ty2, TBool) :: (con1 @ con2), n2)
+  | Not e1 ->
+      let ty, con, n1 = inf env e1 n in
+      (TBool, (ty, TBool) :: con, n1)
   | App (e1, e2) ->
       let t1, c1, n1 = inf env e1 n in
       let t2, c2, n2 = inf env e2 n1 in
@@ -150,6 +169,14 @@ let rec inf env exp n =
       let t1, c1, n1 = inf env e1 n in
       let t2, c2, n2 = inf env e2 n1 in
       (TBool, (t1, t2) :: (c1 @ c2), n2)
+  | Neq (e1, e2) ->
+      let t1, c1, n1 = inf env e1 n in
+      let t2, c2, n2 = inf env e2 n1 in
+      (TBool, (t1, t2) :: (c1 @ c2), n2)
+  | Lt (e1, e2) | Gt (e1, e2) | Le (e1, e2) | Ge (e1, e2) ->
+      let t1, c1, n1 = inf env e1 n in
+      let t2, c2, n2 = inf env e2 n1 in
+      (TBool, (t1, TInt) :: (t2, TInt) :: (c1 @ c2), n2)
 
 let indentify exp env n =
   let ty, eqs, _ = inf env exp n in

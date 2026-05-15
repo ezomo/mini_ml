@@ -7,6 +7,8 @@ let rec string_of_exp exp =
   in
   match exp with
   | Plus (e1, e2) -> "(" ^ string_of_exp e1 ^ " + " ^ string_of_exp e2 ^ ")"
+  | Sub (e1, e2) -> "(" ^ string_of_exp e1 ^ " - " ^ string_of_exp e2 ^ ")"
+  | Mul (e1, e2) -> "(" ^ string_of_exp e1 ^ " * " ^ string_of_exp e2 ^ ")"
   | Int this -> string_of_int this
   | Bool this -> string_of_bool this
   | Fun (x, body) -> string_of_func (x, body)
@@ -22,6 +24,14 @@ let rec string_of_exp exp =
       ^ string_of_func (arg_name, fn_body)
       ^ " in " ^ string_of_exp in_exp ^ ")"
   | Eq (e1, e2) -> "(" ^ string_of_exp e1 ^ " = " ^ string_of_exp e2 ^ ")"
+  | Neq (e1, e2) -> "(" ^ string_of_exp e1 ^ " <> " ^ string_of_exp e2 ^ ")"
+  | Lt (e1, e2) -> "(" ^ string_of_exp e1 ^ " < " ^ string_of_exp e2 ^ ")"
+  | Gt (e1, e2) -> "(" ^ string_of_exp e1 ^ " > " ^ string_of_exp e2 ^ ")"
+  | Le (e1, e2) -> "(" ^ string_of_exp e1 ^ " <= " ^ string_of_exp e2 ^ ")"
+  | Ge (e1, e2) -> "(" ^ string_of_exp e1 ^ " >= " ^ string_of_exp e2 ^ ")"
+  | And (e1, e2) -> "(" ^ string_of_exp e1 ^ " && " ^ string_of_exp e2 ^ ")"
+  | Or (e1, e2) -> "(" ^ string_of_exp e1 ^ " || " ^ string_of_exp e2 ^ ")"
+  | Not e -> "(not " ^ string_of_exp e ^ ")"
 
 let string_of_value v =
   let rec string_of_vfunc (arg_name, body, env) =

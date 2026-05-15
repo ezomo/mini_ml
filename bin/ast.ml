@@ -8,10 +8,22 @@ type exp =
   | App of exp * exp
   | Var of var
   | Plus of exp * exp
+  | Sub of exp * exp
+  | Mul of exp * exp
+  (* | Div of exp * exp *)
+  (*float対策*)
   | Int of int
   | Bool of bool
   | IF of exp * exp * exp
+  | And of exp * exp
+  | Or of exp * exp
+  | Not of exp
   | Eq of exp * exp
+  | Neq of exp * exp
+  | Lt of exp * exp
+  | Gt of exp * exp
+  | Le of exp * exp
+  | Ge of exp * exp
 
 and func = var * exp
 
