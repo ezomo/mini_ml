@@ -18,6 +18,16 @@ let run exp =
     Printf.printf "\n"
   with Failure msg -> print_endline ("Error: " ^ msg)
 
+let rec run_test (src, expected, expected_ty) =
+  let exp = parse src in
+  let ty = indentify exp [] 0 in
+  let value = eval exp [] in
+  let result = string_of_value value in
+  Printf.printf "Src    : %s\n" src;
+  Printf.printf "Expect : %s : %s\n" expected expected_ty;
+  Printf.printf "Result : %s : %s\n" result (string_of_ty ty);
+  Printf.printf "\n"
+
 let test_normal =
   [
     ("false", "false", "bool");
@@ -43,16 +53,6 @@ let test_normal =
     ("let x = 3 in x + 2", "5", "int");
     ("let f = fun x -> x + 1 in f 5", "6", "int");
   ]
-
-let rec run_test (src, expected, expected_ty) =
-  let exp = parse src in
-  let ty = indentify exp [] 0 in
-  let value = eval exp [] in
-  let result = string_of_value value in
-  Printf.printf "Src    : %s\n" src;
-  Printf.printf "Expect : %s : %s\n" expected expected_ty;
-  Printf.printf "Result : %s : %s\n" result (string_of_ty ty);
-  Printf.printf "\n"
 
 let test_rec =
   [
@@ -81,7 +81,7 @@ let test_z =
   (* let rec z f = f (fun x -> (z f) x) *)
   let z = "let rec z  = fun f -> f (fun x -> (z f) x) in " in
   [
-    (z ^ "z", "λf.(λx.f (z f) x)", "(a -> b) -> a");
+    (z ^ "z", "λf.(λx.f (z f) x)", "(('a -> 'b) -> 'a -> 'b) -> 'a -> 'b");
     ( z ^ "z (fun g -> fun n -> if n = 0 then 1 else n * g (n - 1)) 5",
       "120",
       "int" );
@@ -104,7 +104,7 @@ let () =
   List.iter run_test test_z;
 
   print_endline "=== Y Combinator Tests ===";
-  run_test (y ^ "y", "λf.(y f)", "(a -> b) -> a")
+  run_test (y ^ "y", "λf.(y f)", "(a -> a) -> a")
 
 (* let () =
   run_test
