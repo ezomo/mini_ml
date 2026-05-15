@@ -24,7 +24,7 @@ rule token = parse
   | "!="        { NEQ }
   | "->"        { ARROW }
   | "+"         { PLUS }
-  | "-"         { MINUS }
+  | "-"         { MINUS }  (*    5 -1だ <-NG、　5 - 1 スペース必須*)
   | "*"         { TIMES }
   | "<"         { LT }
   | ">"         { GT }
