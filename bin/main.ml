@@ -37,10 +37,5 @@ let factorial_test =
 let () = run factorial_test
 let y = "let rec y  = fun f -> (fun x -> f (y f) x) in "
 let y_test = run (parse (y ^ "y"))
-
-let () =
-  run
-    (parse
-       "let rec y = fun f -> (fun x -> f (y f) x) in \n\
-        let fact = fun g -> fun n -> if n = 0 then 1 else n * g (n - 1) in\n\
-        (y fact) 5")
+let fact = "let fact = fun g -> fun n -> if n = 0 then 1 else n * g (n - 1) in "
+let () = run (parse (y ^ fact ^ "(y fact) 5"))
